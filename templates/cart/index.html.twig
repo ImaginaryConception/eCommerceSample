@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Mon Panier</h1>
+
+    {% if items|length > 0 %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ (item.product.price / 100)|number_format(2, ',', ' ') }} €</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <a href="{{ path('cart_remove', {'id': item.product.id}) }}" class="btn btn-sm btn-outline-primary me-2">-</a>
+                                <span>{{ item.quantity }}</span>
+                                <a href="{{ path('cart_add', {'id': item.product.id}) }}" class="btn btn-sm btn-outline-primary ms-2">+</a>
+                            </div>
+                        </td>
+                        <td>{{ ((item.product.price * item.quantity) / 100)|number_format(2, ',', ' ') }} €</td>
+                        <td>
+                            <a href="{{ path('cart_delete', {'id': item.product.id}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total :</strong></td>
+                    <td><strong>{{ (total / 100)|number_format(2, ',', ' ') }} €</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="d-flex justify-content-end mt-4">
+            <a href="{{ path('product_index') }}" class="btn btn-secondary me-2">Continuer les achats</a>
+            <a href="{{ path('cart_checkout') }}" class="btn btn-success">Procéder au paiement</a>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Votre panier est vide. <a href="{{ path('product_index') }}">Commencer les achats</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le Produit{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="h3 mb-3 font-weight-normal">Modifier le produit</h1>
+
+                    {{ form_start(productForm) }}
+                    <div class="mb-3">
+                        {{ form_row(productForm.name) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_row(productForm.description) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_row(productForm.price) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_row(productForm.imageUrl) }}
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ path('product_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <form method="post" action="{{ path('product_delete', {'id': product.id}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                    {{ form_end(productForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

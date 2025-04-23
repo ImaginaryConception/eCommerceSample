@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue sur notre boutique en ligne{% endblock %}
+
+{% block body %}
+    <div class="jumbotron bg-light p-5 rounded mb-4">
+        <h1 class="display-4">Bienvenue sur notre boutique</h1>
+        <p class="lead">Découvrez notre sélection de produits de qualité à des prix compétitifs.</p>
+        <hr class="my-4">
+        <p>Parcourez nos catégories et trouvez ce qui vous fait plaisir.</p>
+        <a class="btn btn-primary btn-lg" href="{{ path('product_index') }}" role="button">Voir nos produits</a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="bi bi-truck" style="font-size: 2rem;"></i>
+                    <h5 class="card-title mt-3">Livraison rapide</h5>
+                    <p class="card-text">Livraison gratuite à partir de 50€ d'achat</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="bi bi-shield-check" style="font-size: 2rem;"></i>
+                    <h5 class="card-title mt-3">Paiement sécurisé</h5>
+                    <p class="card-text">Vos transactions sont 100% sécurisées</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="bi bi-headset" style="font-size: 2rem;"></i>
+                    <h5 class="card-title mt-3">Service client</h5>
+                    <p class="card-text">Une équipe à votre écoute 7j/7</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
