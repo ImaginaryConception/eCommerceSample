@@ -25,11 +25,14 @@ class Product
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $stock = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageUrl = null;
 
     public function getId(): ?int
     {
@@ -94,6 +97,17 @@ class Product
     public function getCategory(): ?Category
     {
         return $this->category;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(?string $imageUrl): static
+    {
+        $this->imageUrl = $imageUrl;
+        return $this;
     }
 
     public function setCategory(?Category $category): static

@@ -46,8 +46,13 @@
                                     <i class="bi bi-person-circle"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="#">Mon profil</a></li>
-                                    <li><a class="dropdown-item" href="#">Mes commandes</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('profile_index') }}">Mon profil</a></li>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="{{ path('product_new') }}">
+                                            <i class="bi bi-plus-circle me-2"></i>Ajouter un produit
+                                        </a></li>
+                                    {% endif %}
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
                                 </ul>

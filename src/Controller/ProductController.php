@@ -22,7 +22,19 @@ class ProductController extends AbstractController
             ->findAll();
 
         return $this->render('product/index.html.twig', [
-            'products' => $products,
+            'products' => $products
+        ]);
+    }
+
+    #[Route('/list', name: 'list')]
+    public function list(EntityManagerInterface $entityManager): Response
+    {
+        $products = $entityManager
+            ->getRepository(Product::class)
+            ->findAll();
+
+        return $this->render('product/list.html.twig', [
+            'products' => $products
         ]);
     }
 
@@ -43,6 +55,20 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                try {
+                    $imageFile->move(
+                        $this->getParameter('product_images_directory'),
+                        $newFilename
+                    );
+                    $product->setImage($newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Une erreur est survenue lors du téléchargement de l\'image');
+                }
+            }
+            
             $entityManager->persist($product);
             $entityManager->flush();
 
@@ -63,6 +89,30 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                try {
+                    $imageFile->move(
+                        $this->getParameter('product_images_directory'),
+                        $newFilename
+                    );
+                    
+                    // Supprimer l'ancienne image si elle existe
+                    $oldImage = $product->getImage();
+                    if ($oldImage) {
+                        $oldImagePath = $this->getParameter('product_images_directory').'/'.$oldImage;
+                        if (file_exists($oldImagePath)) {
+                            unlink($oldImagePath);
+                        }
+                    }
+                    
+                    $product->setImage($newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Une erreur est survenue lors du téléchargement de l\'image');
+                }
+            }
+            
             $entityManager->flush();
 
             $this->addFlash('success', 'Produit mis à jour avec succès.');

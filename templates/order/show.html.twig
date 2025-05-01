@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la commande #{{ order.id }}{% endblock %}
+
+{% block body %}
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Commande #{{ order.id }}</h1>
+            <a href="{{ path('order_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour aux commandes
+            </a>
+        </div>
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Informations de la commande</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Date :</strong> {{ order.createdAt|date('d/m/Y H:i') }}</p>
+                        <p><strong>Statut :</strong> {{ order.status }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Total :</strong> {{ (order.total / 100)|number_format(2, ',', ' ') }} €</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Articles commandés</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Prix unitaire</th>
+                                <th>Quantité</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.orderItems %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ (item.price / 100)|number_format(2, ',', ' ') }} €</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ (item.price * item.quantity / 100)|number_format(2, ',', ' ') }} €</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                <td><strong>{{ (order.total / 100)|number_format(2, ',', ' ') }} €</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

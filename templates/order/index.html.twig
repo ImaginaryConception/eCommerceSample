@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes{% endblock %}
+
+{% block body %}
+    <div class="container my-4">
+        <h1 class="mb-4">Mes commandes</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% if orders is empty %}
+            <div class="alert alert-info">
+                Vous n'avez pas encore passé de commande.
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>#{{ order.id }}</td>
+                                <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                                <td>{{ (order.total / 100)|number_format(2, ',', ' ') }} €</td>
+                                <td>{{ order.status }}</td>
+                                <td>
+                                    <a href="{{ path('order_show', {'id': order.id}) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i> Voir
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
